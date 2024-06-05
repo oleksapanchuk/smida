@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: "SMIDA"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/CompanyReportsDB
+    username: user
+    password: 1111
+    driverClassName: org.postgresql.Driver
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/ReportDetailsDB

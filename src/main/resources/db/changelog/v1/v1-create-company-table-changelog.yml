@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Oleksandr Panchuk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: company
+      changes:
+        - createTable:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: registration_number
+                  type: varchar(255)
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: timestamp
+
+        - createTable:
+            tableName: report
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: company_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_company
+                    references: company(id)
+              - column:
+                  name: report_date
+                  type: timestamp
+              - column:
+                  name: total_revenue
+                  type: decimal
+              - column:
+                  name: net_profit
+                  type: decimal
