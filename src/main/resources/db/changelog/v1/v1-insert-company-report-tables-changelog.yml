@@ -1,0 +1,205 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Oleksandr Panchuk
+      changes:
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  value: '11111111-1111-1111-1111-111111111111'
+              - column:
+                  name: name
+                  value: 'ATB-MARKET'
+              - column:
+                  name: registration_number
+                  value: 'REG001'
+              - column:
+                  name: address
+                  value: '123 Main St, Kyiv'
+              - column:
+                  name: created_at
+                  valueDate: '2020-01-01T10:00:00'
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  value: '22222222-2222-2222-2222-222222222222'
+              - column:
+                  name: name
+                  value: 'ZAPORIZHSTAL'
+              - column:
+                  name: registration_number
+                  value: 'REG002'
+              - column:
+                  name: address
+                  value: '456 Main St, Zaporizhzhia'
+              - column:
+                  name: created_at
+                  valueDate: '2014-01-02T10:00:00'
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  value: '33333333-3333-3333-3333-333333333333'
+              - column:
+                  name: name
+                  value: 'UKRAINSKA ZALIZNYTSYA'
+              - column:
+                  name: registration_number
+                  value: 'REG003'
+              - column:
+                  name: address
+                  value: '789 Main St, Kyiv'
+              - column:
+                  name: created_at
+                  valueDate: '2000-01-03T10:00:00'
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  value: '44444444-4444-4444-4444-444444444444'
+              - column:
+                  name: name
+                  value: 'ENERGOATOM'
+              - column:
+                  name: registration_number
+                  value: 'REG004'
+              - column:
+                  name: address
+                  value: '101 Main St, Dnipro'
+              - column:
+                  name: created_at
+                  valueDate: '2024-01-04T10:00:00'
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  value: '55555555-5555-5555-5555-555555555555'
+              - column:
+                  name: name
+                  value: 'SILPO-FOOD'
+              - column:
+                  name: registration_number
+                  value: 'REG005'
+              - column:
+                  name: address
+                  value: '202 Main St, Kyiv'
+              - column:
+                  name: created_at
+                  valueDate: '2024-01-05T10:00:00'
+        - insert:
+            tableName: company
+            columns:
+              - column:
+                  name: id
+                  value: '66666666-6666-6666-6666-666666666666'
+              - column:
+                  name: name
+                  value: 'Lviv Croissants'
+              - column:
+                  name: registration_number
+                  value: 'REG006'
+              - column:
+                  name: address
+                  value: '303 Main St, Lviv'
+              - column:
+                  name: created_at
+                  valueDate: '2016-01-06T10:00:00'
+
+
+        - insert:
+            tableName: report
+            columns:
+              - column:
+                  name: id
+                  value: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
+              - column:
+                  name: company_id
+                  value: '22222222-2222-2222-2222-222222222222'
+              - column:
+                  name: report_date
+                  valueDate: '2024-02-28T11:00:00'
+              - column:
+                  name: total_revenue
+                  valueNumeric: '200000.00'
+              - column:
+                  name: net_profit
+                  valueNumeric: '20000.00'
+        - insert:
+            tableName: report
+            columns:
+              - column:
+                  name: id
+                  value: 'cccccccc-cccc-cccc-cccc-cccccccccccc'
+              - column:
+                  name: company_id
+                  value: '11111111-1111-1111-1111-111111111111'
+              - column:
+                  name: report_date
+                  valueDate: '2024-03-01T11:00:00'
+              - column:
+                  name: total_revenue
+                  valueNumeric: '210000.00'
+              - column:
+                  name: net_profit
+                  valueNumeric: '21000.00'
+        - insert:
+            tableName: report
+            columns:
+              - column:
+                  name: id
+                  value: 'dddddddd-dddd-dddd-dddd-dddddddddddd'
+              - column:
+                  name: company_id
+                  value: '33333333-3333-3333-3333-333333333333'
+              - column:
+                  name: report_date
+                  valueDate: '2024-03-02T11:00:00'
+              - column:
+                  name: total_revenue
+                  valueNumeric: '220000.00'
+              - column:
+                  name: net_profit
+                  valueNumeric: '22000.00'
+        - insert:
+            tableName: report
+            columns:
+              - column:
+                  name: id
+                  value: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'
+              - column:
+                  name: company_id
+                  value: '44444444-4444-4444-4444-444444444444'
+              - column:
+                  name: report_date
+                  valueDate: '2024-03-03T11:00:00'
+              - column:
+                  name: total_revenue
+                  valueNumeric: '230000.00'
+              - column:
+                  name: net_profit
+                  valueNumeric: '23000.00'
+        - insert:
+            tableName: report
+            columns:
+              - column:
+                  name: id
+                  value: 'ffffffff-ffff-ffff-ffff-ffffffffffff'
+              - column:
+                  name: company_id
+                  value: '55555555-5555-5555-5555-555555555555'
+              - column:
+                  name: report_date
+                  valueDate: '2024-03-04T11:00:00'
+              - column:
+                  name: total_revenue
+                  valueNumeric: '240000.00'
+              - column:
+                  name: net_profit
+                  valueNumeric: '24000.00'
