@@ -60,9 +60,9 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers("/api/v1/companies/admin/**", "/api/v1/reports/admin/**").hasRole("ADMIN")
+                        .antMatchers("/api/v1/companies/admin/**", "/api/v1/reports/admin/**", "/api/v1/report-details/admin/**").hasRole("ADMIN")
                         .antMatchers("/api/v1/authenticate/**", "/api/v1/companies/**",
-                                "/api/v1/reports/**", "/api/v1/reports-details/**",
+                                "/api/v1/reports/**", "/api/v1/report-details/**",
                                 "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
                                 "/swagger-resources/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()

@@ -3,11 +3,14 @@ package org.smida.smidaApplication.entity;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Id;
 import java.util.UUID;
 
 @Document(collection = "reports")
 public class ReportDetails {
-    @Indexed
+    @Id
+    private String id;
+    @Indexed(unique = true)
     private UUID reportId;
     private Object financialData;
     private String comments;
@@ -23,6 +26,10 @@ public class ReportDetails {
     }
 
     // Getters and Setters
+    public String getId() {
+        return id;
+    }
+
     public UUID getReportId() {
         return reportId;
     }

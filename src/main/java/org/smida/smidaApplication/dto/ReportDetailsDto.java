@@ -11,6 +11,12 @@ import java.util.UUID;
 public class ReportDetailsDto {
 
     @Schema(
+            description = "Report Details ID",
+            example = "123e4567-e89b-12d3-a456-426614174000"
+    )
+    private String id;
+
+    @Schema(
             description = "Report ID",
             example = "123e4567-e89b-12d3-a456-426614174000"
     )
@@ -31,10 +37,19 @@ public class ReportDetailsDto {
     public ReportDetailsDto() {
     }
 
-    public ReportDetailsDto(UUID reportId, Object financialData, String comments) {
+    public ReportDetailsDto(String id, UUID reportId, Object financialData, String comments) {
+        this.id = id;
         this.reportId = reportId;
         this.financialData = financialData;
         this.comments = comments;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UUID getReportId() {

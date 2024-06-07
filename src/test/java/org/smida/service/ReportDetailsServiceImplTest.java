@@ -8,10 +8,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.smida.smidaApplication.dto.ReportDetailsDto;
 import org.smida.smidaApplication.entity.ReportDetails;
-import org.smida.smidaApplication.mapper.ReportDetailsMapper;
 import org.smida.smidaApplication.repository.ReportDetailsRepository;
 import org.smida.smidaApplication.service.impl.ReportDetailsServiceImpl;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,33 +36,101 @@ public class ReportDetailsServiceImplTest {
         reportId = UUID.randomUUID();
         reportDetails = new ReportDetails();
         reportDetails.setReportId(reportId);
-        // Initialize other fields of reportDetails as needed
 
         reportDetailsDto = new ReportDetailsDto();
-        reportDetailsDto.setReportId(reportId);
-        // Initialize other fields of reportDetailsDto as needed
+        reportDetailsDto.setId(reportId.toString());
     }
 
     @Test
     void testGetReportDetails() {
-        when(reportDetailsRepository.findByReportId(reportId)).thenReturn(reportDetails);
+        // Mocking repository behavior
+        when(reportDetailsRepository.findByReportId(reportId)).thenReturn(Optional.of(reportDetails));
 
+        // Calling the service method
         ReportDetailsDto result = reportDetailsService.getReportDetails(reportId);
 
+        // Assertions
         assertNotNull(result);
         assertEquals(reportId, result.getReportId());
         // Add assertions for other fields as needed
+
+        // Verify repository method invocation
         verify(reportDetailsRepository, times(1)).findByReportId(reportId);
     }
 
     @Test
     void testGetReportDetails_NotFound() {
-        when(reportDetailsRepository.findByReportId(reportId)).thenReturn(null);
+        // Mocking repository behavior
+        when(reportDetailsRepository.findByReportId(reportId)).thenReturn(Optional.empty());
 
-        ReportDetailsDto result = reportDetailsService.getReportDetails(reportId);
+        // Calling the service method and expecting an exception
+        assertThrows(EntityNotFoundException.class, () -> reportDetailsService.getReportDetails(reportId));
 
-        assertNull(result);
+        // Verify repository method invocation
         verify(reportDetailsRepository, times(1)).findByReportId(reportId);
+    }
+
+    @Test
+    void testSaveReportDetails() {
+        // Mocking repository behavior
+        when(reportDetailsRepository.save(any(ReportDetails.class))).thenReturn(reportDetails);
+
+        // Calling the service method
+        ReportDetailsDto result = reportDetailsService.saveReportDetails(reportDetailsDto);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(reportId, result.getReportId());
+        // Add assertions for other fields as needed
+
+        // Verify repository method invocation
+        verify(reportDetailsRepository, times(1)).save(any(ReportDetails.class));
+    }
+
+
+    @Test
+    void testUpdateReportDetails() {
+        // Mocking repository behavior
+        when(reportDetailsRepository.findById(reportId.toString())).thenReturn(Optional.of(reportDetails));
+        when(reportDetailsRepository.save(any(ReportDetails.class))).thenReturn(reportDetails);
+
+        // Calling the service method
+        ReportDetailsDto result = reportDetailsService.updateReportDetails(reportDetailsDto);
+
+        // Assertions
+        assertNotNull(result);
+        assertEquals(reportId, result.getReportId());
+        // Add assertions for other fields as needed
+
+        // Verify repository method invocation
+        verify(reportDetailsRepository, times(1)).findById(reportId.toString());
+        verify(reportDetailsRepository, times(1)).save(any(ReportDetails.class));
+    }
+
+    @Test
+    void testDeleteReportDetails() {
+        // Mocking repository behavior
+        when(reportDetailsRepository.existsById(reportId.toString())).thenReturn(true);
+
+        // Calling the service method
+        reportDetailsService.deleteReportDetails(reportId.toString());
+
+        // Verify repository method invocation
+        verify(reportDetailsRepository, times(1)).existsById(reportId.toString());
+        verify(reportDetailsRepository, times(1)).deleteById(reportId.toString());
+    }
+
+    @Test
+    void testDeleteReportDetails_NotFound() {
+        // Mocking repository behavior
+        when(reportDetailsRepository.existsById(reportId.toString())).thenReturn(false);
+
+        // Calling the service method
+        assertThrows(EntityNotFoundException.class, () -> reportDetailsService.deleteReportDetails(reportId.toString()));
+
+        // Verify repository method invocation
+        verify(reportDetailsRepository, times(1)).existsById(reportId.toString());
+        verify(reportDetailsRepository, never()).deleteById(reportId.toString());
     }
 }
 
