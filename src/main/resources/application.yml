@@ -10,7 +10,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
     mongodb:
-      uri: mongodb://localhost:27020/report_details
+      uri: mongodb://localhost:27020/new_database_1
+
+mongock:
+  change-logs-scan-package: org.smida.smidaApplication.configuration
 
 jwt:
   secret: eyJhcGkta2V5IjogImFzbmJ0dWVhb3J1ZW9idTQzNW5zdGF1In0K

@@ -14,12 +14,4 @@ public class OpenApiConfig {
                 .pathsToMatch("/api/v1/**")
                 .build();
     }
-
-    @Bean
-    public GroupedOpenApi adminApi() {
-        return GroupedOpenApi.builder()
-                .group("springshop-admin")
-                .pathsToMatch("/admin/**")
-                .build();
-    }
 }

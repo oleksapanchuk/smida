@@ -1,5 +1,6 @@
 package org.smida.smidaApplication;
 
+import com.github.cloudyrock.spring.v5.EnableMongock;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -31,6 +32,7 @@ import java.util.UUID;
 				url = "https://github.com/oleksapanchuk/smida"
 		)
 )
+@EnableMongock
 public class SmidaApplication {
 
 	public static void main(String[] args) {
