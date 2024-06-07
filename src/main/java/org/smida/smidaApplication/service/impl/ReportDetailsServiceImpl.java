@@ -1,12 +1,13 @@
 package org.smida.smidaApplication.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.smida.smidaApplication.dto.ReportDetailsDto;
 import org.smida.smidaApplication.entity.ReportDetails;
+import org.smida.smidaApplication.mapper.ReportDetailsMapper;
 import org.smida.smidaApplication.repository.ReportDetailsRepository;
 import org.smida.smidaApplication.service.ReportDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReportDetailsServiceImpl implements ReportDetailsService {
@@ -18,7 +19,8 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
     }
 
     @Override
-    public List<ReportDetails> findAll() {
-        return reportDetailsRepository.findAll();
+    public ReportDetailsDto getReportDetails(UUID uuid) {
+        ReportDetails reportDetails = reportDetailsRepository.findByReportId(uuid);
+        return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(reportDetails);
     }
 }

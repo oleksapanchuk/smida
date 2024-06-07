@@ -1,28 +1,24 @@
-package org.smida.smidaApplication.entity;
-
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+package org.smida.smidaApplication.dto;
 
 import java.util.UUID;
 
-@Document(collection = "reports")
-public class ReportDetails {
-    @Indexed
+public class ReportDetailsDto {
+
     private UUID reportId;
+
     private Object financialData;
+
     private String comments;
 
-    // Constructors
-    public ReportDetails() {
+    public ReportDetailsDto() {
     }
 
-    public ReportDetails(UUID reportId, Object financialData, String comments) {
+    public ReportDetailsDto(UUID reportId, Object financialData, String comments) {
         this.reportId = reportId;
         this.financialData = financialData;
         this.comments = comments;
     }
 
-    // Getters and Setters
     public UUID getReportId() {
         return reportId;
     }

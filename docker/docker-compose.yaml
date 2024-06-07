@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27020:27017"
+    volumes:
+      - data:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
+
+  postgres:
+    image: postgres:13.3
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_DB=CompanyReportsDB
+
+volumes:
+  data: {}
+
+networks:
+    default:
+        name: smida_network

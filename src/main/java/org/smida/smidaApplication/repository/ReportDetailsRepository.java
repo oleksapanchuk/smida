@@ -6,4 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.UUID;
 
 public interface ReportDetailsRepository extends MongoRepository<ReportDetails, UUID> {
+    ReportDetails findByReportId(UUID reportId);
 }

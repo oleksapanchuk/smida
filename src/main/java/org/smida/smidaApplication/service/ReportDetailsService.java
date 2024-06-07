@@ -1,9 +1,9 @@
 package org.smida.smidaApplication.service;
 
-import org.smida.smidaApplication.entity.ReportDetails;
+import org.smida.smidaApplication.dto.ReportDetailsDto;
 
-import java.util.List;
+import java.util.UUID;
 
 public interface ReportDetailsService {
-    List<ReportDetails> findAll();
+    ReportDetailsDto getReportDetails(UUID uuid);
 }

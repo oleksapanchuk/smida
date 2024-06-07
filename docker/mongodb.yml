@@ -1,11 +1,11 @@
-version: '3'
+version: '3.8'
+
 services:
   mongo:
-    image: mongo:4.4.6
-    container_name: mongo
+    image: mongo:latest
+    container_name: mongo_database
     ports:
-      - "27017:27017"
+      - "27018:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=1111
-      - MONGO_INITDB_DATABASE=ReportDetailsDB
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example

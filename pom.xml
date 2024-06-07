@@ -42,12 +42,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- Liquibase -->
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
-
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -80,6 +74,19 @@
 			<version>1.4.2.Final</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- Liquibase Core -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+
+		<!-- Liquibase MongoDB Extension -->
+<!--		<dependency>-->
+<!--			<groupId>org.liquibase.ext</groupId>-->
+<!--			<artifactId>liquibase-mongodb</artifactId>-->
+<!--			<version>4.6.1</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>

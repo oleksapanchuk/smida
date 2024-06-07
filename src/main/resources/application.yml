@@ -8,4 +8,4 @@ spring:
     driverClassName: org.postgresql.Driver
   data:
     mongodb:
-      uri: mongodb://localhost:27017/ReportDetailsDB
+      uri: mongodb://localhost:27020/report_details
