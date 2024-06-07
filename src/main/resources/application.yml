@@ -6,6 +6,12 @@ spring:
     username: user
     password: 1111
     driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   data:
     mongodb:
       uri: mongodb://localhost:27020/report_details
+
+jwt:
+  secret: eyJhcGkta2V5IjogImFzbmJ0dWVhb3J1ZW9idTQzNW5zdGF1In0K
+  expiration: 86400000

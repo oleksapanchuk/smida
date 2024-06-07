@@ -1,7 +1,5 @@
 package org.smida.smidaApplication.entity;
 
-import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
