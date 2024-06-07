@@ -42,4 +42,6 @@ public class CompanyDto {
             example = "2022-06-01T12:00:00Z"
     )
     private Timestamp createdAt;
+
+
 }

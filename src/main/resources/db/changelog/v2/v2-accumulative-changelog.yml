@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/v2/v2-create-company-table-changelog.yml
+
+  - include:
+        file: db/changelog/v2/v2-insert-company-report-tables-changelog.yml
+
+  - include:
+        file: db/changelog/v2/v2-create-insert-users-changelog.xml

@@ -1,7 +1,6 @@
 package org.smida.smidaApplication.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,4 +19,6 @@ public class Company {
     private String registrationNumber;
     private String address;
     private Timestamp createdAt;
+
+
 }
