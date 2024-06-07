@@ -10,6 +10,9 @@ public class CompanyDto {
     private String address;
     private Timestamp createdAt;
 
+    public CompanyDto() {
+    }
+
     public CompanyDto(UUID id, String name, String registrationNumber, String address, Timestamp createdAt) {
         this.id = id;
         this.name = name;

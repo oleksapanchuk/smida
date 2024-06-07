@@ -1,6 +1,7 @@
 package org.smida.smidaApplication.security;
 
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
+import org.smida.smidaApplication.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

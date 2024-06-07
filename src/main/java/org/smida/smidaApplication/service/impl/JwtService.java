@@ -1,4 +1,4 @@
-package org.smida.smidaApplication.security;
+package org.smida.smidaApplication.service.impl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

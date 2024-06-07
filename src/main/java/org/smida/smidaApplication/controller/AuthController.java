@@ -2,7 +2,7 @@ package org.smida.smidaApplication.controller;
 
 import org.smida.smidaApplication.dto.AuthenticationRequest;
 import org.smida.smidaApplication.dto.AuthenticationResponse;
-import org.smida.smidaApplication.security.JwtService;
+import org.smida.smidaApplication.service.impl.JwtService;
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
