@@ -1,7 +1,11 @@
 package org.smida.smidaApplication.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 @Schema(
         name = "AuthenticationRequest",
         description = "Schema for Authentication Request"
@@ -20,24 +24,4 @@ public class AuthenticationRequest {
     )
     private String password;
 
-    public AuthenticationRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

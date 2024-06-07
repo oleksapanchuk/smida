@@ -1,7 +1,7 @@
 package org.smida.smidaApplication.configuration;
 
-import org.smida.smidaApplication.repository.UserRepository;
 import org.smida.smidaApplication.filter.JwtRequestFilter;
+import org.smida.smidaApplication.repository.UserRepository;
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,5 +1,7 @@
 package org.smida.smidaApplication.service.impl;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.smida.smidaApplication.dto.ReportDto;
 import org.smida.smidaApplication.entity.Report;
 import org.smida.smidaApplication.excaption.ResourceNotFoundException;
@@ -11,14 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service class to manage reports.
+ */
+@AllArgsConstructor
+@Slf4j
 @Service
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
-
-    public ReportServiceImpl(ReportRepository reportRepository) {
-        this.reportRepository = reportRepository;
-    }
 
     /**
      * Retrieves a list of all reports.
@@ -27,7 +30,9 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public List<ReportDto> getAllReports() {
+        log.info("Fetching all reports");
         List<Report> reports = reportRepository.findAll();
+        log.info("Fetched {} reports", reports.size());
         return ReportMapper.INSTANCE.reportsToReportDtos(reports);
     }
 
@@ -39,7 +44,9 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public List<ReportDto> getReportsByCompanyId(UUID companyId) {
+        log.info("Fetching reports for company with ID: {}", companyId);
         List<Report> reports = reportRepository.findAllByCompanyId(companyId);
+        log.info("Fetched {} reports for company with ID: {}", reports.size(), companyId);
         return ReportMapper.INSTANCE.reportsToReportDtos(reports);
     }
 
@@ -51,9 +58,13 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public ReportDto getReport(UUID uuid) {
+        log.info("Fetching report with ID: {}", uuid);
         return reportRepository.findById(uuid)
                 .map(ReportMapper.INSTANCE::reportToReportDto)
-                .orElseThrow(() -> new ResourceNotFoundException("Report", "uuid", uuid));
+                .orElseThrow(() -> {
+                    log.error("Report not found with ID: {}", uuid);
+                    return new ResourceNotFoundException("Report", "uuid", uuid);
+                });
     }
 
     /**
@@ -64,8 +75,10 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public ReportDto saveReport(ReportDto reportDto) {
+        log.info("Saving new report");
         Report report = ReportMapper.INSTANCE.reportDtoToReport(reportDto);
         Report createdReport = reportRepository.save(report);
+        log.info("New report saved with ID: {}", createdReport.getId());
         return ReportMapper.INSTANCE.reportToReportDto(createdReport);
     }
 
@@ -77,8 +90,10 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public ReportDto updateReport(ReportDto reportDto) {
+        log.info("Updating report with ID: {}", reportDto.getId());
         Report report = ReportMapper.INSTANCE.reportDtoToReport(reportDto);
         Report updatedReport = reportRepository.save(report);
+        log.info("Report with ID: {} updated successfully", reportDto.getId());
         return ReportMapper.INSTANCE.reportToReportDto(updatedReport);
     }
 
@@ -91,11 +106,13 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public boolean deleteReport(UUID uuid) {
         try {
+            log.info("Deleting report with ID: {}", uuid);
             reportRepository.deleteById(uuid);
-            return true; // Successfully deleted
+            log.info("Report with ID: {} deleted successfully", uuid);
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false; // Failed to delete
+            log.error("Failed to delete report with ID: {}", uuid, e);
+            return false;
         }
     }
 }

@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.smida.smidaApplication.service.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 public class JwtServiceImpl implements JwtService {
     @Value("${jwt.secret}")
@@ -31,6 +33,7 @@ public class JwtServiceImpl implements JwtService {
      * @return Extracted email from the token.
      */
     public String extractEmail(String token) {
+        log.info("Extracting email from JWT token");
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -54,6 +57,7 @@ public class JwtServiceImpl implements JwtService {
      * @return Generated JWT token.
      */
     public String generateToken(UserDetails userDetails) {
+        log.info("Generating JWT token for UserDetails: {}", userDetails.getUsername());
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -64,6 +68,7 @@ public class JwtServiceImpl implements JwtService {
      * @return Generated JWT token.
      */
     public String generateToken(String email) {
+        log.info("Generating JWT token for email: {}", email);
         return Jwts
                 .builder()
                 .setSubject(email)
@@ -84,6 +89,7 @@ public class JwtServiceImpl implements JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
+        log.info("Generating JWT token with extra claims for UserDetails: {}", userDetails.getUsername());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -102,6 +108,7 @@ public class JwtServiceImpl implements JwtService {
      * @return true if the token is valid, false otherwise.
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
+        log.info("Validating JWT token for UserDetails: {}", userDetails.getUsername());
         final String username = extractEmail(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
@@ -113,9 +120,9 @@ public class JwtServiceImpl implements JwtService {
      * @return true if the token is expired, false otherwise.
      */
     public boolean isTokenExpired(String token) {
+        log.info("Checking if JWT token is expired");
         return extractExpiration(token).before(new Date());
     }
-
 
     private Claims extractAllClaims(String token) {
         return Jwts

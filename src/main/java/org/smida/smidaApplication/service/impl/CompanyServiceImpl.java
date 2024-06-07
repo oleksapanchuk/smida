@@ -1,5 +1,7 @@
 package org.smida.smidaApplication.service.impl;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.smida.smidaApplication.dto.CompanyDto;
 import org.smida.smidaApplication.entity.Company;
 import org.smida.smidaApplication.excaption.ResourceNotFoundException;
@@ -11,14 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service class to manage companies.
+ */
+@AllArgsConstructor
+@Slf4j
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
-
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
-    }
 
     /**
      * Retrieves a list of all companies.
@@ -27,7 +30,9 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public List<CompanyDto> getAllCompanies() {
+        log.info("Fetching all companies");
         List<Company> companies = companyRepository.findAll();
+        log.info("Fetched {} companies", companies.size());
         return CompanyMapper.INSTANCE.companiesToCompanyDtos(companies);
     }
 
@@ -39,9 +44,13 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public CompanyDto getCompany(UUID id) {
+        log.info("Fetching company with ID: {}", id);
         return companyRepository.findById(id)
                 .map(CompanyMapper.INSTANCE::companyToCompanyDto)
-                .orElseThrow(() -> new ResourceNotFoundException("Company", "id", id));
+                .orElseThrow(() -> {
+                    log.error("Company not found with ID: {}", id);
+                    return new ResourceNotFoundException("Company", "id", id);
+                });
     }
 
     /**
@@ -52,8 +61,10 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public CompanyDto saveCompany(CompanyDto companyDto) {
+        log.info("Saving new company");
         Company company = CompanyMapper.INSTANCE.companyDtoToCompany(companyDto);
         Company createdCompany = companyRepository.save(company);
+        log.info("New company saved with ID: {}", createdCompany.getId());
         return CompanyMapper.INSTANCE.companyToCompanyDto(createdCompany);
     }
 
@@ -65,8 +76,10 @@ public class CompanyServiceImpl implements CompanyService {
      */
     @Override
     public CompanyDto updateCompany(CompanyDto companyDto) {
+        log.info("Updating company with ID: {}", companyDto.getId());
         Company company = CompanyMapper.INSTANCE.companyDtoToCompany(companyDto);
         Company updatedCompany = companyRepository.save(company);
+        log.info("Company with ID: {} updated successfully", companyDto.getId());
         return CompanyMapper.INSTANCE.companyToCompanyDto(updatedCompany);
     }
 
@@ -79,11 +92,13 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public boolean deleteCompany(UUID id) {
         try {
+            log.info("Deleting company with ID: {}", id);
             companyRepository.deleteById(id);
-            return true; // Successfully deleted
+            log.info("Company with ID: {} deleted successfully", id);
+            return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false; // Failed to delete
+            log.error("Failed to delete company with ID: {}", id, e);
+            return false;
         }
     }
 }

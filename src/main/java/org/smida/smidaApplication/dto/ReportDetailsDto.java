@@ -1,9 +1,11 @@
 package org.smida.smidaApplication.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.UUID;
 
+@Data
 @Schema(
         name = "ReportDetailsDto",
         description = "Schema for Report Details data transfer object"
@@ -33,46 +35,4 @@ public class ReportDetailsDto {
             example = "This report includes data for the last quarter."
     )
     private String comments;
-
-    public ReportDetailsDto() {
-    }
-
-    public ReportDetailsDto(String id, UUID reportId, Object financialData, String comments) {
-        this.id = id;
-        this.reportId = reportId;
-        this.financialData = financialData;
-        this.comments = comments;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public UUID getReportId() {
-        return reportId;
-    }
-
-    public void setReportId(UUID reportId) {
-        this.reportId = reportId;
-    }
-
-    public Object getFinancialData() {
-        return financialData;
-    }
-
-    public void setFinancialData(Object financialData) {
-        this.financialData = financialData;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
 }

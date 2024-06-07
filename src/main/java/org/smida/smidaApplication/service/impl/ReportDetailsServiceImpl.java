@@ -1,5 +1,7 @@
 package org.smida.smidaApplication.service.impl;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.smida.smidaApplication.dto.ReportDetailsDto;
 import org.smida.smidaApplication.entity.ReportDetails;
 import org.smida.smidaApplication.mapper.ReportDetailsMapper;
@@ -10,14 +12,15 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
+/**
+ * Service class to manage report details.
+ */
+@AllArgsConstructor
+@Slf4j
 @Service
 public class ReportDetailsServiceImpl implements ReportDetailsService {
 
     private final ReportDetailsRepository reportDetailsRepository;
-
-    public ReportDetailsServiceImpl(ReportDetailsRepository reportDetailsRepository) {
-        this.reportDetailsRepository = reportDetailsRepository;
-    }
 
     /**
      * Retrieves details of a report based on the provided ID.
@@ -27,8 +30,13 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
      */
     @Override
     public ReportDetailsDto getReportDetails(UUID uuid) {
+        log.info("Attempting to retrieve report details for ID: {}", uuid);
         ReportDetails reportDetails = reportDetailsRepository.findByReportId(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("Report details not found with ID: " + uuid));
+                .orElseThrow(() -> {
+                    log.error("Report details not found for ID: {}", uuid);
+                    return new EntityNotFoundException("Report details not found with ID: " + uuid);
+                });
+        log.info("Report details retrieved successfully for ID: {}", uuid);
         return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(reportDetails);
     }
 
@@ -40,8 +48,10 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
      */
     @Override
     public ReportDetailsDto saveReportDetails(ReportDetailsDto reportDetailsDto) {
+        log.info("Attempting to save report details: {}", reportDetailsDto);
         ReportDetails reportDetails = ReportDetailsMapper.INSTANCE.reportDetailsDtoToReportDetails(reportDetailsDto);
         reportDetails = reportDetailsRepository.save(reportDetails);
+        log.info("Report details saved successfully: {}", reportDetailsDto);
         return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(reportDetails);
     }
 
@@ -53,18 +63,18 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
      */
     @Override
     public ReportDetailsDto updateReportDetails(ReportDetailsDto reportDetailsDto) {
-        // Retrieve the report details entity from the database
+        log.info("Attempting to update report details: {}", reportDetailsDto);
         ReportDetails existingReportDetails = reportDetailsRepository.findById(reportDetailsDto.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Report details not found with ID: " + reportDetailsDto.getId()));
+                .orElseThrow(() -> {
+                    log.error("Report details not found for ID: {}", reportDetailsDto.getId());
+                    return new EntityNotFoundException("Report details not found with ID: " + reportDetailsDto.getId());
+                });
 
-        // Update the existing report details entity with the new data
         existingReportDetails.setFinancialData(reportDetailsDto.getFinancialData());
         existingReportDetails.setComments(reportDetailsDto.getComments());
 
-        // Save the updated report details entity
         ReportDetails updatedReportDetails = reportDetailsRepository.save(existingReportDetails);
-
-        // Map and return the updated report details DTO
+        log.info("Report details updated successfully: {}", updatedReportDetails);
         return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(updatedReportDetails);
     }
 
@@ -75,12 +85,12 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
      */
     @Override
     public void deleteReportDetails(String id) {
-        // Check if the report details exist
+        log.info("Attempting to delete report details with ID: {}", id);
         if (!reportDetailsRepository.existsById(id)) {
+            log.error("Report details not found for ID: {}", id);
             throw new EntityNotFoundException("Report details not found with ID: " + id);
         }
-
-        // Delete the report details from the database
         reportDetailsRepository.deleteById(id);
+        log.info("Report details deleted successfully with ID: {}", id);
     }
 }
