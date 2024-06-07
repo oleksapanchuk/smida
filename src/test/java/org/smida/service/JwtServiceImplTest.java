@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.smida.smidaApplication.service.impl.JwtService;
+import org.smida.smidaApplication.service.impl.JwtServiceImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -19,9 +19,9 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class JwtServiceTest {
+class JwtServiceImplTest {
 
-    private JwtService jwtService;
+    private JwtServiceImpl jwtServiceImpl;
 
     @Mock
     private UserDetails userDetails;
@@ -32,22 +32,22 @@ class JwtServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        jwtService = new JwtService();
-        ReflectionTestUtils.setField(jwtService, "secret", secret);
-        ReflectionTestUtils.setField(jwtService, "expiration", expiration);
+        jwtServiceImpl = new JwtServiceImpl();
+        ReflectionTestUtils.setField(jwtServiceImpl, "secret", secret);
+        ReflectionTestUtils.setField(jwtServiceImpl, "expiration", expiration);
     }
 
 
     @Test
     void testGenerateTokenWithUserDetails() {
         when(userDetails.getUsername()).thenReturn("test@example.com");
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtServiceImpl.generateToken(userDetails);
         assertNotNull(token);
     }
 
     @Test
     void testGenerateTokenWithEmail() {
-        String token = jwtService.generateToken("test@example.com");
+        String token = jwtServiceImpl.generateToken("test@example.com");
         assertNotNull(token);
     }
 
@@ -56,7 +56,7 @@ class JwtServiceTest {
         when(userDetails.getUsername()).thenReturn("test@example.com");
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", "ROLE_USER");
-        String token = jwtService.generateToken(claims, userDetails);
+        String token = jwtServiceImpl.generateToken(claims, userDetails);
         assertNotNull(token);
     }
 

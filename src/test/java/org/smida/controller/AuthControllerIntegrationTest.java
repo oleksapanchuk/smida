@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.smida.smidaApplication.SmidaApplication;
 import org.smida.smidaApplication.dto.AuthenticationRequest;
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
-import org.smida.smidaApplication.service.impl.JwtService;
+import org.smida.smidaApplication.service.impl.JwtServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +36,7 @@ public class AuthControllerIntegrationTest {
     private AuthenticationManager authenticationManager;
 
     @MockBean
-    private JwtService jwtService;
+    private JwtServiceImpl jwtServiceImpl;
 
     @MockBean
     private CustomUserDetailsService userDetailsService;
@@ -54,7 +54,7 @@ public class AuthControllerIntegrationTest {
                 .thenReturn(null); // Mock successful authentication
         when(userDetailsService.loadUserByUsername(username))
                 .thenReturn(userDetails); // Mock UserDetails retrieval
-        when(jwtService.generateToken(userDetails))
+        when(jwtServiceImpl.generateToken(userDetails))
                 .thenReturn(token); // Mock JWT generation
 
         mockMvc.perform(post("/api/v1/authenticate/login")

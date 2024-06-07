@@ -1,7 +1,7 @@
-package org.smida.smidaApplication.security;
+package org.smida.smidaApplication.filter;
 
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
-import org.smida.smidaApplication.service.impl.JwtService;
+import org.smida.smidaApplication.service.impl.JwtServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private JwtService jwtService;
+    private JwtServiceImpl jwtServiceImpl;
 
     @Override
     protected void doFilterInternal(
@@ -42,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         final String jwt = authHeader.substring(BEARER.length());
-        final String userEmail = jwtService.extractEmail(jwt);
+        final String userEmail = jwtServiceImpl.extractEmail(jwt);
 
         // if we have user email and user is not authenticated
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -51,7 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
             // check if jwt is valid or not
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtServiceImpl.isTokenValid(jwt, userDetails)) {
 
                 // create authentication token
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

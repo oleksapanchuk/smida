@@ -1,10 +1,12 @@
 package org.smida.smidaApplication.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.smida.smidaApplication.dto.AuthenticationRequest;
 import org.smida.smidaApplication.dto.AuthenticationResponse;
-import org.smida.smidaApplication.service.impl.JwtService;
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.smida.smidaApplication.service.impl.JwtServiceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,16 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/api/v1/authenticate", produces = {MediaType.APPLICATION_JSON_VALUE})
+@Tag(name = "Authentication API", description = "REST API Documentation for authentication")
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JwtServiceImpl jwtServiceImpl;
+    private final CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtService jwtService;
+    public AuthController(AuthenticationManager authenticationManager, JwtServiceImpl jwtServiceImpl, CustomUserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtServiceImpl = jwtServiceImpl;
+        this.userDetailsService = userDetailsService;
+    }
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
+    @Operation(summary = "Authenticate user", description = "Authenticate user and generate JWT token")
+    @ApiResponse(responseCode = "200", description = "JWT token generated successfully")
+    @ApiResponse(responseCode = "401", description = "Unauthorized: Incorrect username or password")
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
@@ -39,7 +46,7 @@ public class AuthController {
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtService.generateToken(userDetails);
+        final String jwt = jwtServiceImpl.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }

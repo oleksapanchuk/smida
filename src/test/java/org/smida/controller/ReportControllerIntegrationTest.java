@@ -64,21 +64,21 @@ public class ReportControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testSaveReport() throws Exception {
         ReportDto reportDto = new ReportDto();
         String jsonReportDto = new ObjectMapper().writeValueAsString(reportDto);
 
         when(reportService.saveReport(any())).thenReturn(reportDto);
 
-        mockMvc.perform(post("/api/v1/reports/saveReport")
+        mockMvc.perform(post("/api/v1/reports/admin/saveReport")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonReportDto))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testUpdateReport() throws Exception {
         ReportDto reportDto = new ReportDto();
         reportDto.setId(UUID.randomUUID());
@@ -86,19 +86,19 @@ public class ReportControllerIntegrationTest {
 
         when(reportService.updateReport(any())).thenReturn(reportDto);
 
-        mockMvc.perform(put("/api/v1/reports/updateReport")
+        mockMvc.perform(put("/api/v1/reports/admin/updateReport")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonReportDto))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testDeleteReport() throws Exception {
         UUID uuid = UUID.randomUUID();
         when(reportService.deleteReport(uuid)).thenReturn(true);
 
-        mockMvc.perform(delete("/api/v1/reports/deleteReport")
+        mockMvc.perform(delete("/api/v1/reports/admin/deleteReport")
                         .param("uuid", uuid.toString()))
                 .andExpect(status().isOk());
     }

@@ -52,7 +52,7 @@ public class CompanyControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testSaveCompany() throws Exception {
         CompanyDto companyDto = new CompanyDto();
         companyDto.setName("Test Company");
@@ -60,14 +60,14 @@ public class CompanyControllerIntegrationTest {
 
         when(companyService.saveCompany(any())).thenReturn(companyDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/companies/saveCompany")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/companies/admin/saveCompany")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonCompanyDto))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testUpdateCompany() throws Exception {
         CompanyDto companyDto = new CompanyDto();
         companyDto.setId(UUID.randomUUID());
@@ -76,19 +76,19 @@ public class CompanyControllerIntegrationTest {
 
         when(companyService.updateCompany(any())).thenReturn(companyDto);
 
-        mockMvc.perform(put("/api/v1/companies/updateCompany")
+        mockMvc.perform(put("/api/v1/companies/admin/updateCompany")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonCompanyDto))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "admin", roles = { "ADMIN" })
     void testDeleteCompany() throws Exception {
         UUID uuid = UUID.randomUUID();
         when(companyService.deleteCompany(uuid)).thenReturn(true);
 
-        mockMvc.perform(delete("/api/v1/companies/deleteCompany")
+        mockMvc.perform(delete("/api/v1/companies/admin/deleteCompany")
                         .param("uuid", uuid.toString()))
                 .andExpect(status().isOk());
     }

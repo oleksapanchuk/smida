@@ -18,6 +18,12 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
         this.reportDetailsRepository = reportDetailsRepository;
     }
 
+    /**
+     * Retrieves details of a report based on the provided ID.
+     *
+     * @param uuid - UUID of the report for which details are to be retrieved.
+     * @return ReportDetailsDto representing the details of the report.
+     */
     @Override
     public ReportDetailsDto getReportDetails(UUID uuid) {
         ReportDetails reportDetails = reportDetailsRepository.findByReportId(uuid);

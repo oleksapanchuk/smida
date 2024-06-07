@@ -1,7 +1,7 @@
 package org.smida.smidaApplication.configuration;
 
 import org.smida.smidaApplication.repository.UserRepository;
-import org.smida.smidaApplication.security.JwtRequestFilter;
+import org.smida.smidaApplication.filter.JwtRequestFilter;
 import org.smida.smidaApplication.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -60,7 +60,11 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers("/api/v1/authenticate/**").permitAll()
+                        .antMatchers("/api/v1/companies/admin/**", "/api/v1/reports/admin/**").hasRole("ADMIN")
+                        .antMatchers("/api/v1/authenticate/**", "/api/v1/companies/**",
+                                "/api/v1/reports/**", "/api/v1/reports-details/**",
+                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/swagger-resources/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement()

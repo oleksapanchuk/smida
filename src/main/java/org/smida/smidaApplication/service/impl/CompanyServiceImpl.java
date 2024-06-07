@@ -20,12 +20,23 @@ public class CompanyServiceImpl implements CompanyService {
         this.companyRepository = companyRepository;
     }
 
+    /**
+     * Retrieves a list of all companies.
+     *
+     * @return List of CompanyDto representing all companies.
+     */
     @Override
     public List<CompanyDto> getAllCompanies() {
         List<Company> companies = companyRepository.findAll();
         return CompanyMapper.INSTANCE.companiesToCompanyDtos(companies);
     }
 
+    /**
+     * Retrieves a company based on the provided ID.
+     *
+     * @param id - UUID of the company to retrieve.
+     * @return CompanyDto representing the company details.
+     */
     @Override
     public CompanyDto getCompany(UUID id) {
         return companyRepository.findById(id)
@@ -33,6 +44,12 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Company", "id", id));
     }
 
+    /**
+     * Saves a new company.
+     *
+     * @param companyDto - CompanyDto object containing the details of the company to be saved.
+     * @return CompanyDto representing the saved company details.
+     */
     @Override
     public CompanyDto saveCompany(CompanyDto companyDto) {
         Company company = CompanyMapper.INSTANCE.companyDtoToCompany(companyDto);
@@ -40,6 +57,12 @@ public class CompanyServiceImpl implements CompanyService {
         return CompanyMapper.INSTANCE.companyToCompanyDto(createdCompany);
     }
 
+    /**
+     * Updates an existing company.
+     *
+     * @param companyDto - CompanyDto object containing the updated details of the company.
+     * @return CompanyDto representing the updated company details.
+     */
     @Override
     public CompanyDto updateCompany(CompanyDto companyDto) {
         Company company = CompanyMapper.INSTANCE.companyDtoToCompany(companyDto);
@@ -47,9 +70,20 @@ public class CompanyServiceImpl implements CompanyService {
         return CompanyMapper.INSTANCE.companyToCompanyDto(updatedCompany);
     }
 
+    /**
+     * Deletes a company based on the provided ID.
+     *
+     * @param id - UUID of the company to delete.
+     * @return boolean indicating if the deletion of the company was successful or not.
+     */
     @Override
     public boolean deleteCompany(UUID id) {
-        companyRepository.deleteById(id);
-        return true;
+        try {
+            companyRepository.deleteById(id);
+            return true; // Successfully deleted
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // Failed to delete
+        }
     }
 }
