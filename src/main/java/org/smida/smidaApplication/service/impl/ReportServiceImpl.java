@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static org.smida.smidaApplication.mapper.ReportMapper.*;
+
 /**
  * Service class to manage reports.
  */
@@ -33,7 +35,7 @@ public class ReportServiceImpl implements ReportService {
         log.info("Fetching all reports");
         List<Report> reports = reportRepository.findAll();
         log.info("Fetched {} reports", reports.size());
-        return ReportMapper.INSTANCE.reportsToReportDtos(reports);
+        return reportsToReportDtos(reports);
     }
 
     /**
@@ -47,7 +49,7 @@ public class ReportServiceImpl implements ReportService {
         log.info("Fetching reports for company with ID: {}", companyId);
         List<Report> reports = reportRepository.findAllByCompanyId(companyId);
         log.info("Fetched {} reports for company with ID: {}", reports.size(), companyId);
-        return ReportMapper.INSTANCE.reportsToReportDtos(reports);
+        return reportsToReportDtos(reports);
     }
 
     /**
@@ -60,7 +62,7 @@ public class ReportServiceImpl implements ReportService {
     public ReportDto getReport(UUID uuid) {
         log.info("Fetching report with ID: {}", uuid);
         return reportRepository.findById(uuid)
-                .map(ReportMapper.INSTANCE::reportToReportDto)
+                .map(ReportMapper::toDto)
                 .orElseThrow(() -> {
                     log.error("Report not found with ID: {}", uuid);
                     return new ResourceNotFoundException("Report", "uuid", uuid);
@@ -76,10 +78,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto saveReport(ReportDto reportDto) {
         log.info("Saving new report");
-        Report report = ReportMapper.INSTANCE.reportDtoToReport(reportDto);
+        Report report = toEntity(reportDto);
         Report createdReport = reportRepository.save(report);
         log.info("New report saved with ID: {}", createdReport.getId());
-        return ReportMapper.INSTANCE.reportToReportDto(createdReport);
+        return toDto(createdReport);
     }
 
     /**
@@ -91,10 +93,10 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto updateReport(ReportDto reportDto) {
         log.info("Updating report with ID: {}", reportDto.getId());
-        Report report = ReportMapper.INSTANCE.reportDtoToReport(reportDto);
+        Report report = toEntity(reportDto);
         Report updatedReport = reportRepository.save(report);
         log.info("Report with ID: {} updated successfully", reportDto.getId());
-        return ReportMapper.INSTANCE.reportToReportDto(updatedReport);
+        return toDto(updatedReport);
     }
 
     /**

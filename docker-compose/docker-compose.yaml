@@ -1,0 +1,44 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27020:27017"
+    volumes:
+      - data:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
+    networks:
+      - smida_network
+
+  postgres:
+    image: postgres:13.3
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_DB=CompanyReportsDB
+    networks:
+      - smida_network
+
+  smida:
+    image: "oleksapanchuk/smida:v1"
+    container_name: smida-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: "smida-service"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/CompanyReportsDB"
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo:27017/ReportDetailsDB"
+    networks:
+      - smida_network
+
+volumes:
+  data: {}
+
+networks:
+  smida_network:
+    driver: bridge

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static org.smida.smidaApplication.mapper.CompanyMapper.*;
+
 /**
  * Service class to manage companies.
  */
@@ -33,7 +35,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("Fetching all companies");
         List<Company> companies = companyRepository.findAll();
         log.info("Fetched {} companies", companies.size());
-        return CompanyMapper.INSTANCE.companiesToCompanyDtos(companies);
+        return companiesToCompanyDtos(companies);
     }
 
     /**
@@ -46,7 +48,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto getCompany(UUID id) {
         log.info("Fetching company with ID: {}", id);
         return companyRepository.findById(id)
-                .map(CompanyMapper.INSTANCE::companyToCompanyDto)
+                .map(CompanyMapper::toDto)
                 .orElseThrow(() -> {
                     log.error("Company not found with ID: {}", id);
                     return new ResourceNotFoundException("Company", "id", id);
@@ -62,10 +64,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto saveCompany(CompanyDto companyDto) {
         log.info("Saving new company");
-        Company company = CompanyMapper.INSTANCE.companyDtoToCompany(companyDto);
+        Company company = toEntity(companyDto);
         Company createdCompany = companyRepository.save(company);
         log.info("New company saved with ID: {}", createdCompany.getId());
-        return CompanyMapper.INSTANCE.companyToCompanyDto(createdCompany);
+        return toDto(createdCompany);
     }
 
     /**
@@ -77,10 +79,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto updateCompany(CompanyDto companyDto) {
         log.info("Updating company with ID: {}", companyDto.getId());
-        Company company = CompanyMapper.INSTANCE.companyDtoToCompany(companyDto);
+        Company company = toEntity(companyDto);
         Company updatedCompany = companyRepository.save(company);
         log.info("Company with ID: {} updated successfully", companyDto.getId());
-        return CompanyMapper.INSTANCE.companyToCompanyDto(updatedCompany);
+        return toDto(updatedCompany);
     }
 
     /**

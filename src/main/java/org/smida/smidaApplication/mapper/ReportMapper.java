@@ -1,19 +1,53 @@
 package org.smida.smidaApplication.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 import org.smida.smidaApplication.dto.ReportDto;
 import org.smida.smidaApplication.entity.Report;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper
-public interface ReportMapper {
-    ReportMapper INSTANCE = Mappers.getMapper(ReportMapper.class);
+public class ReportMapper {
 
-    ReportDto reportToReportDto(Report report);
+    // Convert Report entity to ReportDto
+    public static ReportDto toDto(Report report) {
+        if (report == null) {
+            return null;
+        }
 
-    Report reportDtoToReport(ReportDto reportDto);
+        ReportDto dto = new ReportDto();
+        dto.setId(report.getId());
+        dto.setCompanyId(report.getCompanyId());
+        dto.setReportDate(report.getReportDate());
+        dto.setTotalRevenue(report.getTotalRevenue());
+        dto.setNetProfit(report.getNetProfit());
 
-    List<ReportDto> reportsToReportDtos(List<Report> reports);
+        return dto;
+    }
+
+    // Convert ReportDto to Report entity
+    public static Report toEntity(ReportDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Report report = new Report();
+        report.setId(dto.getId());
+        report.setCompanyId(dto.getCompanyId());
+        report.setReportDate(dto.getReportDate());
+        report.setTotalRevenue(dto.getTotalRevenue());
+        report.setNetProfit(dto.getNetProfit());
+
+        return report;
+    }
+
+    // Convert List of Report entities to List of ReportDto
+    public static List<ReportDto> reportsToReportDtos(List<Report> reports) {
+        if (reports == null || reports.isEmpty()) {
+            return null;
+        }
+
+        return reports.stream()
+                .map(ReportMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

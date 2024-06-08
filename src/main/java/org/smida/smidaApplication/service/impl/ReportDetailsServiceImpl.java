@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.smida.smidaApplication.dto.ReportDetailsDto;
 import org.smida.smidaApplication.entity.ReportDetails;
-import org.smida.smidaApplication.mapper.ReportDetailsMapper;
 import org.smida.smidaApplication.repository.ReportDetailsRepository;
 import org.smida.smidaApplication.service.ReportDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
+
+import static org.smida.smidaApplication.mapper.ReportDetailsMapper.toDto;
+import static org.smida.smidaApplication.mapper.ReportDetailsMapper.toEntity;
 
 /**
  * Service class to manage report details.
@@ -37,7 +39,7 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
                     return new EntityNotFoundException("Report details not found with ID: " + uuid);
                 });
         log.info("Report details retrieved successfully for ID: {}", uuid);
-        return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(reportDetails);
+        return toDto(reportDetails);
     }
 
     /**
@@ -49,10 +51,10 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
     @Override
     public ReportDetailsDto saveReportDetails(ReportDetailsDto reportDetailsDto) {
         log.info("Attempting to save report details: {}", reportDetailsDto);
-        ReportDetails reportDetails = ReportDetailsMapper.INSTANCE.reportDetailsDtoToReportDetails(reportDetailsDto);
+        ReportDetails reportDetails = toEntity(reportDetailsDto);
         reportDetails = reportDetailsRepository.save(reportDetails);
         log.info("Report details saved successfully: {}", reportDetailsDto);
-        return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(reportDetails);
+        return toDto(reportDetails);
     }
 
     /**
@@ -75,7 +77,7 @@ public class ReportDetailsServiceImpl implements ReportDetailsService {
 
         ReportDetails updatedReportDetails = reportDetailsRepository.save(existingReportDetails);
         log.info("Report details updated successfully: {}", updatedReportDetails);
-        return ReportDetailsMapper.INSTANCE.reportDetailsToReportDetailDto(updatedReportDetails);
+        return toDto(updatedReportDetails);
     }
 
     /**
